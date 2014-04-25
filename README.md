@@ -1,4 +1,5 @@
-Bachelor-Thesis-Server
-======================
 
-Node.js App to upload files
+Bachelor-Thesis-Callbacks
+=========================
+
+Implementation of my file uploader with callbacks
