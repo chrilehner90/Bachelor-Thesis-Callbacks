@@ -7,17 +7,16 @@ window.onload = function() {
 		var processedFiles = []
 
 		for(var i = 0; i < files.length; i++) {
-			f = files[i];
-			readFile(f, function(data) {	
-				processedFiles.push(data);
-				if(processedFiles.length === files.length) {
-					console.log("readFiles");
-				}
-				//console.log(processedFiles);
-				
-				
-			});
-		}
+				f = files[i];
+				readFile(f, function(data) {	
+					processedFiles.push(data);
+					if(processedFiles.length === files.length) {
+						uploadFiles(processedFiles, function() {
+							console.log("uploadedFiles");
+						});
+					}
+				});
+			}
 		
 		console.log("TEST");
 	}
@@ -34,6 +33,23 @@ window.onload = function() {
 			};
 			reader.readAsDataURL(f);
 		}, 0, f, callback);
+	}
+
+	function uploadFiles(files, callback) {
+		setTimeout(function() {
+			var xhr = new XMLHttpRequest();
+			var formData = new FormData();
+			xhr.onload = function() {
+				callback();
+			};
+			
+			xhr.open("POST", "http://localhost:3000/upload", true);
+			xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+			for(var file in files) {
+				formData.append("uploads", files[file].data);
+			}
+			xhr.send(formData);
+		}, 0, files, callback);
 	}
 
 
