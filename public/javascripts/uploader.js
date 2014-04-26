@@ -14,7 +14,10 @@ window.onload = function() {
 					processedFiles.push(data);
 					if(processedFiles.length === files.length) {
 						uploadFiles(processedFiles, function(err, response) {
-							console.log(response);
+							if(err) console.error(err);
+							else {
+								console.log(response);
+							}
 						});
 					}
 				}
@@ -44,7 +47,8 @@ window.onload = function() {
 			callback(null, evt.target.response);
 		};
 		xhr.onerror = function(evt) {
-			callback(evt.target, null)
+			console.log("Error!");
+			callback(evt.target.error.message, null)
 		}
 		
 		xhr.open("POST", "http://localhost:3000/upload", true);
