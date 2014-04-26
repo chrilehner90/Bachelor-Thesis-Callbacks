@@ -1,9 +1,7 @@
 window.onload = function() {
 
 	function handleFileInput(evt) {
-		var files = evt.target.files;
-		console.log(files.length);
-		
+		var files = evt.target.files;		
 		var processedFiles = []
 
 		for(var i = 0; i < files.length; i++) {
@@ -27,7 +25,7 @@ window.onload = function() {
 
 	function readFile(f, callback) {
 		var reader = new FileReader();
-		reader.onloadend = function() {
+		reader.onload = function() {
 			var file = {
 				'data': f,
 				'path': reader.result
@@ -35,7 +33,7 @@ window.onload = function() {
 			callback(null, file);
 		};
 		reader.onerror = function(evt) {
-			callback(evt.target.error.message, null)
+			callback(evt.target.error.message)
 		}
 		reader.readAsDataURL(f);
 	}
@@ -43,12 +41,16 @@ window.onload = function() {
 	function uploadFiles(files, callback) {
 		var xhr = new XMLHttpRequest();
 		var formData = new FormData();
-		xhr.onload = function(evt) {
-			callback(null, evt.target.response);
+		xhr.onload = function() {
+			if(xhr.status == 200) {
+				callback(null, xhr.statusText);	
+			}
+			else {
+				callback(xhr.statusText, null);
+			}
 		};
-		xhr.onerror = function(evt) {
-			console.log("Error!");
-			callback(evt.target.error.message, null)
+		xhr.onerror = function() {
+			callback(xhr.statusText, null)
 		}
 		
 		xhr.open("POST", "http://localhost:3000/upload", true);
