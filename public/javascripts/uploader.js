@@ -32,7 +32,6 @@ window.onload = function() {
 			callback(null, file);
 		};
 		reader.onerror = function(evt) {
-			console.log("Error");
 			callback(evt.target.error.message, null)
 		}
 		reader.readAsDataURL(f);
