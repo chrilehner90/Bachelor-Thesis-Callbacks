@@ -7,49 +7,43 @@ window.onload = function() {
 		var processedFiles = []
 
 		for(var i = 0; i < files.length; i++) {
-				f = files[i];
-				readFile(f, function(data) {	
-					processedFiles.push(data);
-					if(processedFiles.length === files.length) {
-						uploadFiles(processedFiles, function() {
-							console.log("uploadedFiles");
-						});
-					}
-				});
-			}
-		
-		console.log("TEST");
+			f = files[i];
+			readFile(f, function(data) {	
+				processedFiles.push(data);
+				if(processedFiles.length === files.length) {
+					uploadFiles(processedFiles, function(response) {
+						console.log(response);
+					});
+				}
+			});
+		}
 	}
 
 	function readFile(f, callback) {
-		setTimeout(function() {
-			var reader = new FileReader();
-			reader.onloadend = function() {
-				var file = {
-					'data': f,
-					'path': reader.result
-				};
-				callback(file);
+		var reader = new FileReader();
+		reader.onloadend = function() {
+			var file = {
+				'data': f,
+				'path': reader.result
 			};
-			reader.readAsDataURL(f);
-		}, 0, f, callback);
+			callback(file);
+		};
+		reader.readAsDataURL(f);
 	}
 
 	function uploadFiles(files, callback) {
-		setTimeout(function() {
-			var xhr = new XMLHttpRequest();
-			var formData = new FormData();
-			xhr.onload = function() {
-				callback();
-			};
-			
-			xhr.open("POST", "http://localhost:3000/upload", true);
-			xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
-			for(var file in files) {
-				formData.append("uploads", files[file].data);
-			}
-			xhr.send(formData);
-		}, 0, files, callback);
+		var xhr = new XMLHttpRequest();
+		var formData = new FormData();
+		xhr.onload = function(evt) {
+			callback(evt.target.response);
+		};
+		
+		xhr.open("POST", "http://localhost:3000/upload", true);
+		xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+		for(var file in files) {
+			formData.append("uploads", files[file].data);
+		}
+		xhr.send(formData);
 	}
 
 
