@@ -1,9 +1,9 @@
 window.onload = function() {
-
+	'use strict';
 	function handleFileInput(evt) {
-		var files = evt.target.files;		
-		var processedFiles = []
-
+		var files = evt.target.files;
+		var processedFiles = [];
+		var f;
 		for(var i = 0; i < files.length; i++) {
 			f = files[i];
 			readFile(f, function(err, data) {
@@ -33,8 +33,8 @@ window.onload = function() {
 			callback(null, file);
 		};
 		reader.onerror = function(evt) {
-			callback(evt.target.error.message)
-		}
+			callback(evt.target.error.message);
+		};
 		reader.readAsDataURL(f);
 	}
 
@@ -50,13 +50,13 @@ window.onload = function() {
 			}
 		};
 		xhr.onerror = function() {
-			callback(xhr.statusText, null)
-		}
+			callback(xhr.statusText, null);
+		};
 		
-		xhr.open("POST", "http://localhost:3000/upload", true);
+		xhr.open('POST', 'http://localhost:3000/upload', true);
 		xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
 		for(var file in files) {
-			formData.append("uploads", files[file].data);
+			formData.append('uploads', files[file].data);
 		}
 		xhr.send(formData);
 	}
@@ -68,7 +68,7 @@ window.onload = function() {
 
 		// Click button to see that the site is still responding while it reads the files
 		document.getElementById('btn').addEventListener('click', function() {
-			console.log("clicked");
+			console.log('clicked');
 		}, false);
 	}
 	else {
