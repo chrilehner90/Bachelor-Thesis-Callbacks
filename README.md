@@ -7,3 +7,7 @@ Clone the app and execute it with the following command:
 ```
 node app.js
 ```
+
+For the implementations of this application with promises or generators, please visit:
+https://github.com/chrilehner90/Bachelor-Thesis-Promises or
+https://github.com/chrilehner90/Bachelor-Thesis-Generators
